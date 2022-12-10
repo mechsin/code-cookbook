@@ -1,0 +1,6 @@
+# Some typical Python entries 
+__pycache__/
+*.py[co]
+
+# Vim swap files
+*.swp
