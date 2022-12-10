@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-
 import logging
-
 
 # It is best to define a logger per module
 # We use the name of the module to name the logger this is common 
