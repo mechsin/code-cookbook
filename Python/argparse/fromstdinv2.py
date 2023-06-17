@@ -39,8 +39,8 @@ if __name__ == "__main__":
     desc = 'Implements Action class that reads from STDIN'
     parser = argparse.ArgumentParser(description=desc)
 
-    parser.add_argument('input', action=ExtendFromPipe)
+    parser.add_argument('--optional', action=ExtendFromPipe)
 
     cli_args = parser.parse_args()
 
-    print(cli_args.input)
+    print(cli_args.optional)

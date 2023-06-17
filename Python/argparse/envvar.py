@@ -10,23 +10,25 @@ import os
 
 SENTINEL = object()
 
-class EvnDefault(argparse.Action):
+class EvnDefault(argparse._StoreAction):
 
-    def __init__(self, *pargs, envvar=None, **kwargs):
+    def __init__(self, *pargs, envvar, **kwargs):
         self.envvar = envvar
-        super().__init__(*pargs, default=SENTINEL, **kwargs)
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        if values is None:
-            value = os.environ.get(self.envvar)
-        breakpoint() 
-        setattr(namespace, self.dest, values)
+        kwargs['required'] = False
+        try:
+            kwargs['default']  = os.environ[self.envvar]
+        except KeyError:
+            msg = 'No environmental variable named {}'
+            if kwargs['default'] is SENTINEL: 
+                raise argparse.ArgumentError(msg.format(envvar))
+        super().__init__(*pargs, **kwargs)
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('needed', action=EvnDefault, envvar='SHELL')
+    # parser.add_argument('needed', action=EvnDefault, envvar='SHELL')
+    parser.add_argument('needed', action=EvnDefault, default=None, envvar='BOB')
     parser.add_argument('--opts', action=EvnDefault, envvar='EDITOR')
 
     cli_args = parser.parse_args()

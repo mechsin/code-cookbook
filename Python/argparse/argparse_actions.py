@@ -15,11 +15,12 @@ class LogLevel(argparse.Action):
 
 class ExtendFromPipe(argparse._StoreAction):
 
-    def __init__(self, *pargs, **kwargs):
+    def __init__(self, *pargs, delimiter='\n', **kwargs):
         super().__init__(*pargs, **kwargs)
         # Values from STDIN will extend a list so forcing nargs to '*' will
         # ensure this argument always creates a list.
         self.nargs = '*'
+        self.delimiter = delimiter
 
     def __call__(self, parser, namespace, values, option_string=None):
         # Calling super here ensures that there will be a default list
@@ -37,7 +38,7 @@ class ExtendFromPipe(argparse._StoreAction):
             temp.extend(fromstdin)
             setattr(namespace, self.dest, temp)
 
-def FileOrDirectory(argstring):
+def FileOrDirectoryType(argstring):
     """ Determines if input is a file or directory and returns a list
 
         This function is meant to be use with the argparse module as a
